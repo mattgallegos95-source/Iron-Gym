@@ -10,14 +10,8 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Missing OPENAI_API_KEY in Vercel." });
     }
 
-    if (!image || typeof image !== "string") {
-      return res.status(400).json({ error: "Missing meal image." });
-    }
-
-    if (!image.startsWith("data:image/")) {
-      return res.status(400).json({
-        error: "Image must be a base64 data URL beginning with data:image/."
-      });
+    if (!image || typeof image !== "string" || !image.startsWith("data:image/")) {
+      return res.status(400).json({ error: "Missing or invalid meal image." });
     }
 
     const prompt = `
@@ -34,27 +28,30 @@ Rules:
 ${mealName ? `User meal label: ${mealName}` : ""}
 `;
 
-    const openaiResponse = await fetch("https://api.openai.com/v1/responses", {
+    const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: process.env.OPENAI_MEAL_MODEL || "gpt-4.1-mini",
-        input: [
+        model: process.env.OPENAI_MEAL_MODEL || "gpt-4o-mini",
+        response_format: { type: "json_object" },
+        messages: [
           {
             role: "user",
             content: [
-              { type: "input_text", text: prompt },
+              { type: "text", text: prompt },
               {
-                type: "input_image",
-                image_url: image
+                type: "image_url",
+                image_url: {
+                  url: image
+                }
               }
             ]
           }
         ],
-        max_output_tokens: 500
+        max_tokens: 500
       })
     });
 
@@ -66,17 +63,11 @@ ${mealName ? `User meal label: ${mealName}` : ""}
       });
     }
 
-    const outputText =
-      data.output_text ||
-      (data.output || [])
-        .flatMap(item => item.content || [])
-        .map(content => content.text || "")
-        .join("") ||
-      "";
+    const outputText = data.choices?.[0]?.message?.content || "";
 
     let parsed;
     try {
-      parsed = JSON.parse(outputText.replace(/```json|```/g, "").trim());
+      parsed = JSON.parse(outputText);
     } catch {
       return res.status(500).json({
         error: "AI returned unreadable JSON.",
@@ -92,7 +83,6 @@ ${mealName ? `User meal label: ${mealName}` : ""}
       fat: Number(parsed.fat || 0),
       notes: parsed.notes || "AI estimate. Review serving size."
     });
-
   } catch (error) {
     return res.status(500).json({
       error: error.message || "Server error."
