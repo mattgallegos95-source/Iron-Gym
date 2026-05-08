@@ -12,7 +12,20 @@ export default async function handler(req, res) {
       headers: { "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         model: process.env.OPENAI_MEAL_MODEL || "gpt-4.1-mini",
-        input: [{ role: "user", content: [{ type: "input_text", text: prompt }, { type: "input_image", image_url: image }] }],
+        input: [
+          { 
+            role: "user", 
+            content: [
+              { type: "input_text", text: prompt },
+              { 
+                type: "input_image", 
+                image_
+                  url: image 
+              }
+              }
+        ],
+      }
+                           }
         max_output_tokens: 500
       })
     });
