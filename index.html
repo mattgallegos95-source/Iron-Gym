@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iron Therapy</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#ef4444">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">
+    <div class="logo-mark"><img src="logo.jpg" alt="Iron Therapy Logo"></div>
+    <div>
+      <div class="version">CLEAN RESET V1</div>
+      <h1>Iron Therapy</h1>
+      <p>Earn It Every Day.</p>
+    </div>
+  </div>
+</header>
+
+<main class="app">
+  <section class="calendar-panel">
+    <div class="month-row">
+      <button id="prevMonth">‹</button>
+      <h2 id="monthTitle"></h2>
+      <button id="nextMonth">›</button>
+    </div>
+    <div class="weekdays">
+      <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+    </div>
+    <div id="calendar" class="calendar"></div>
+  </section>
+
+  <section class="day-panel">
+    <h2 id="dateTitle"></h2>
+    <p id="summary" class="muted"></p>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="fitness">Fitness</button>
+      <button class="tab" data-tab="nutrition">Nutrition</button>
+      <button class="tab" data-tab="tasks">Daily Tasks</button>
+    </div>
+
+    <section id="fitness" class="tab-content active">
+      <div class="card">
+        <h3>Daily Fitness Photo</h3>
+        <input id="fitnessPhoto" type="file" accept="image/*">
+        <img id="fitnessPreview" class="preview">
+      </div>
+
+      <div class="card">
+        <h3>Today’s Workout</h3>
+        <select id="workoutSelect"></select>
+        <button id="loadWorkout">Load Workout</button>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <h3>Workout Log</h3>
+          <button id="addExercise">+ Add Exercise</button>
+        </div>
+        <div id="exerciseList"></div>
+      </div>
+
+      <div class="card">
+        <label class="toggle"><input id="absToggle" type="checkbox"> Add Abs Today</label>
+        <div id="absList"></div>
+      </div>
+
+      <div class="card">
+        <label class="toggle"><input id="cardioToggle" type="checkbox"> Add Cardio Today</label>
+        <div id="cardioFields" class="grid">
+          <input id="cardioType" placeholder="Type of cardio">
+          <input id="cardioDuration" placeholder="Duration">
+          <input id="cardioDistance" placeholder="Distance">
+          <input id="cardioCalories" placeholder="Calories burned">
+        </div>
+      </div>
+    </section>
+
+    <section id="nutrition" class="tab-content">
+      <div class="card">
+        <div class="row">
+          <h3>Nutrition / Meal Tracker</h3>
+          <button id="addMeal">+ Add Meal</button>
+        </div>
+        <div class="goals grid">
+          <input id="goalCalories" type="number" placeholder="Calories goal">
+          <input id="goalProtein" type="number" placeholder="Protein goal">
+          <input id="goalCarbs" type="number" placeholder="Carbs goal">
+          <input id="goalFat" type="number" placeholder="Fat goal">
+        </div>
+        <div id="macroTotals" class="totals"></div>
+        <div id="mealList"></div>
+      </div>
+    </section>
+
+    <section id="tasks" class="tab-content">
+      <div class="card">
+        <div class="row">
+          <h3>Work / Responsibilities</h3>
+          <button data-add-task="work">+ Add Work Task</button>
+        </div>
+        <div id="workTasks"></div>
+
+        <div class="row">
+          <h3>Personal Development</h3>
+          <button data-add-task="development">+ Add Development Task</button>
+        </div>
+        <div id="devTasks"></div>
+
+        <h3>Daily Reflection</h3>
+        <textarea id="wentWell" placeholder="What went well?"></textarea>
+        <textarea id="needsWork" placeholder="What needs improvement?"></textarea>
+        <textarea id="tomorrowFocus" placeholder="Tomorrow's focus"></textarea>
+      </div>
+    </section>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

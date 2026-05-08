@@ -1,0 +1,1 @@
+Clean reset V1. Create a brand-new GitHub repo and Vercel project. Upload all files/folders from this package to repo root. The app header says CLEAN RESET V1 so you can verify the new build is live.
